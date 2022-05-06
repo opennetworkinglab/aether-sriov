@@ -1,0 +1,12 @@
+---
+# {{ cookiecutter.role_name }} tasks/main.yml
+#
+# SPDX-FileCopyrightText: {{ cookiecutter.year }} {{ cookiecutter.author }} <{{ cookiecutter.email }}>
+# SPDX-License-Identifier: {{ cookiecutter.license }}
+{% raw %}
+- name: include OS-specific vars
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: include OS-specific tasks
+  include_tasks: "{{ ansible_os_family }}.yml"
+{% endraw -%}

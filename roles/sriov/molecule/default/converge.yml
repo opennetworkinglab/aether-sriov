@@ -1,0 +1,16 @@
+---
+# sriov molecule/default/verify.yml
+#
+# SPDX-FileCopyrightText: © 2021 Open Networking Foundation <support@opennetworking.org>
+# SPDX-License-Identifier: Apache-2.0
+
+- name: Converge
+  hosts: all
+  become: true
+  vars:
+    sriov_pf_name: "eth0"
+    molecule_handler_notest: 1
+  tasks:
+    - name: "Include sriov"
+      include_role:
+        name: "sriov"

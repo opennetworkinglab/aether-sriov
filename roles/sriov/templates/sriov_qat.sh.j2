@@ -1,0 +1,62 @@
+#!/bin/bash
+
+{#
+SPDX-FileCopyrightText: © 2022 Open Networking Foundation <support@opennetworking.org>
+SPDX-FileCopyrightText: © 2019 Intel Corporation
+SPDX-License-Identifier: Apache-2.0
+
+# adapted from https://github.com/clearlinux/cloud-native-setup/blob/master/clr-k8s-examples/9-multi-network/systemd/sriov.sh
+#}
+# {{ ansible_managed }}
+
+set -o errexit
+set -o pipefail
+set -o nounset
+set -x
+
+QAT_PFs=($(lspci -Dmm | grep Quick | awk '{print $1}'))
+QAT_DIR="/sys/bus/pci/devices/"
+
+
+setup_qat_pf_vfs() {
+	echo "Restarting services qat_service and qat_service_vfs"
+    service qat_service restart
+    service qat_service_vfs restart
+}
+
+setup_pf() {
+	local pf=$1
+	local num_vfs
+
+	echo "Resetting PF $pf"
+	echo 0 | tee "$QAT_DIR"/"$pf"/sriov_numvfs
+	num_vfs=$(cat "$QAT_DIR"/"$pf"/sriov_totalvfs)
+	echo "Enabling $num_vfs VFs for $pf"
+	echo "$num_vfs" | tee "$QAT_DIR"/"$pf"/sriov_numvfs
+}
+
+vfio_bind() {
+	local pf=$1
+
+	vfs_dirs=($(ls "$QAT_DIR"/"$pf" | grep virtfn))
+
+    for vf_name in "${vfs_dirs[@]}"; do
+        local vf_dir="$QAT_DIR"/"$pf"/"$vf_name"
+
+		vfpci=$(ls -l "$vf_dir" | awk '{print substr($11,4)}')
+		vfpci_dir=$(readlink -f "$vf_dir")
+
+    	echo "Binding qat VF $vfpci with vfio-pci"
+
+	    echo "$vfpci" >"$vfpci_dir"/driver/unbind
+		echo "vfio-pci" >"$vfpci_dir"/driver_override
+		echo "$vfpci" >/sys/bus/pci/drivers/vfio-pci/bind
+    done
+}
+
+setup_qat_pf_vfs
+
+for pf in "${QAT_PFs[@]}"; do
+	# setup_pf "$pf"
+    vfio_bind "$pf"
+done

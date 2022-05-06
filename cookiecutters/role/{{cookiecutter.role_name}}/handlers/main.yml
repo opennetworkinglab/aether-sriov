@@ -1,0 +1,5 @@
+---
+# {{ cookiecutter.role_name }} handlers/main.yml
+#
+# SPDX-FileCopyrightText: {{ cookiecutter.year }} {{ cookiecutter.author }} <{{ cookiecutter.email }}>
+# SPDX-License-Identifier: {{ cookiecutter.license }}

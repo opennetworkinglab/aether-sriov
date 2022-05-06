@@ -1,0 +1,8 @@
+---
+# {{ cookiecutter.role_name }} vars/Debian.yml
+#
+# SPDX-FileCopyrightText: {{ cookiecutter.year }} {{ cookiecutter.author }} <{{ cookiecutter.email }}>
+# SPDX-License-Identifier: {{ cookiecutter.license }}
+#
+# NOTE: Only put platform/OS-specific variables in this file.
+# Put all other variables in the 'defaults/main.yml' file.

@@ -1,0 +1,27 @@
+---
+# sriov meta/main.yml
+#
+# SPDX-FileCopyrightText: © 2021 Open Networking Foundation <support@opennetworking.org>
+# SPDX-License-Identifier: Apache-2.0
+
+galaxy_info:
+  role_name: sriov
+  author: Open Networking Foundation
+  description: Configure SR-IOV
+  company: Open Networking Foundation
+
+  issue_tracker_url: https://jira.opennetworking.org/browse/AETHER-1839
+
+  license: Apache-2.0
+
+  min_ansible_version: 2.9.5
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - "18.04"
+
+  galaxy_tags:
+    - sriov
+
+dependencies: []

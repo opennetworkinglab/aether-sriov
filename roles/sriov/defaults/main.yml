@@ -1,0 +1,18 @@
+---
+# sriov defaults/main.yml
+#
+# SPDX-FileCopyrightText: © 2021 Open Networking Foundation <support@opennetworking.org>
+# SPDX-License-Identifier: Apache-2.0
+
+# Provide SRIOV PF name
+# sriov_pf_name:
+
+# Provide number of 1Gi HugePages
+sriov_1g_hugepages: 32
+
+# Provide QAT driver parameters
+sriov_qat_enabled: false
+sriov_qat_driver_dir: "/opt/qat"
+sriov_qat_latest_name: "QAT.L.4.16.0-00017.tar.gz"
+sriov_qat_latest_url: "https://downloadmirror.intel.com/710050/QAT.L.4.16.0-00017.tar.gz"
+sriov_qat_checksum: "sha256:315f48057253798fae386e514ce834d6b5939eb842491fe27bfc019c42c430f4"

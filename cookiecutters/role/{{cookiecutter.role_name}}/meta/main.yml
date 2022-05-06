@@ -1,0 +1,32 @@
+---
+# {{ cookiecutter.role_name }} meta/main.yml
+#
+# SPDX-FileCopyrightText: {{ cookiecutter.year }} {{ cookiecutter.author }} <{{ cookiecutter.email }}>
+# SPDX-License-Identifier: {{ cookiecutter.license }}
+
+galaxy_info:
+  role_name: {{ cookiecutter.role_name }}
+  namespace: onf
+
+  author: {{ cookiecutter.author }}
+  description: {{ cookiecutter.description }}
+  company: {{ cookiecutter.company }}
+
+  issue_tracker_url: {{ cookiecutter.issue_tracker_url }}
+
+  license: {{ cookiecutter.license }}
+
+  min_ansible_version: {{ cookiecutter.min_ansible_version }}
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+    - name: Debian
+      versions:
+        - bullseye
+
+  galaxy_tags:
+    - {{ cookiecutter.role_name }}
+
+dependencies: []

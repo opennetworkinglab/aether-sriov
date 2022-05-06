@@ -1,0 +1,47 @@
+---
+# sriov molecule/default/verify.yml
+#
+# SPDX-FileCopyrightText: © 2021 Open Networking Foundation <support@opennetworking.org>
+# SPDX-License-Identifier: Apache-2.0
+
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Gather service facts
+      service_facts:
+
+    - name: Verify sriov.service is installed
+      assert:
+        that: "'{{ item }}' in ansible_facts.services"
+      with_items:
+        - sriov.service
+
+    - name: Verify sriov.service is loaded and configured correctly
+      # noqa 303
+      command: "systemctl status sriov.service"
+      register: cmdline
+      changed_when: false
+      failed_when: item not in cmdline.stdout
+      with_items:
+        - loaded
+        - Resetting PF eth0
+
+    - name: Verify kernel boot parameters
+      command: "cat /proc/cmdline"
+      register: cmdline
+      changed_when: false
+      failed_when: item not in cmdline.stdout
+      with_items:
+        - intel_iommu=on
+        - transparent_hugepage=never
+        - default_hugepagesz=1G
+        - hugepagesz=1G hugepages=32
+
+    - name: Verify vfio-pci module is loaded
+      shell: "set -o pipefail && lsmod | grep vfio_pci > /dev/null"
+      args:
+        executable: /bin/bash
+      register: vfio_pci
+      changed_when: vfio_pci.rc != 0
+      failed_when: vfio_pci.rc != 0
+      when: ansible_kernel is version('5.4','<')
