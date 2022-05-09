@@ -1,0 +1,16 @@
+{#
+SPDX-FileCopyrightText: © 2021 Open Networking Foundation <support@opennetworking.org>
+SPDX-License-Identifier: Apache-2.0
+#}
+# {{ ansible_managed }}
+
+[Unit]
+Description=Create VFs
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/default/sriov
+ExecStart=/usr/local/bin/sriov.sh ${SRIOV_PF_NAME}
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,14 @@
+{
+    "role_name": "roledefault",
+    "description": "Description for README and Galaxy",
+    "issue_tracker_url": "https://jira.opennetworking.org/",
+
+    "author": "Open Networking Foundation",
+    "email": "support@opennetworking.org",
+    "company": "Open Networking Foundation",
+
+    "year": "{% now 'utc', '%Y' %}",
+    "license": ["Apache-2.0", "BSD-2-Clause", "MIT"],
+
+    "min_ansible_version": "2.10.7"
+}

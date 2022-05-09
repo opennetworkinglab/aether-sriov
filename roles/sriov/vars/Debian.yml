@@ -1,0 +1,8 @@
+---
+# sriov vars/Debian.yml
+#
+# SPDX-FileCopyrightText: © 2021 Open Networking Foundation <support@opennetworking.org>
+# SPDX-License-Identifier: Apache-2.0
+#
+# NOTE: Only put platform/OS-specific variables in this file.
+# Put all other variables in the 'defaults/main.yml' file.

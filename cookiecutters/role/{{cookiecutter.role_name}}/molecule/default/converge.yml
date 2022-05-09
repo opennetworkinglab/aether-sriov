@@ -1,0 +1,12 @@
+---
+# {{ cookiecutter.role_name }} molecule/default/verify.yml
+#
+# SPDX-FileCopyrightText: {{ cookiecutter.year }} {{ cookiecutter.author }} <{{ cookiecutter.email }}>
+# SPDX-License-Identifier: {{ cookiecutter.license }}
+
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include {{ cookiecutter.role_name }}"
+      include_role:
+        name: "{{ cookiecutter.role_name }}"

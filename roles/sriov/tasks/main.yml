@@ -1,0 +1,67 @@
+---
+# sriov tasks/main.yml
+#
+# SPDX-FileCopyrightText: © 2021 Open Networking Foundation <support@opennetworking.org>
+# SPDX-License-Identifier: Apache-2.0
+
+- name: include OS-specific vars
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: include OS-specific tasks
+  include_tasks: "{{ ansible_os_family }}.yml"
+
+- name: Load vfio_pci module to the kernel
+  modprobe:
+    name: vfio_pci
+    state: present
+  when: ansible_kernel is version('5.4','<')
+
+- name: Set the vfio_pci module to load on boot
+  lineinfile:
+    dest: /etc/modules-load.d/vfio_pci.conf
+    create: true
+    regexp: "^vfio_pci"
+    line: "vfio_pci"
+    mode: 0644
+  when: ansible_kernel is version('5.4','<')
+
+- name: Create sriov system service
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: root
+    group: root
+  loop:
+    - {src: "sriov", dest: "/etc/default/sriov", mode: 644}
+    - {src: "sriov.sh.j2", dest: "/usr/local/bin/sriov.sh", mode: "a+x"}
+    - {
+      src: "sriov.service.j2",
+      dest: "/etc/systemd/system/sriov.service",
+      mode: 644,
+    }
+  notify: enable sriov.service
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Add kernel boot parameters to the grub
+  lineinfile:
+    dest: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX="(?!.* {{ item.regex }})(.*)"'
+    line: 'GRUB_CMDLINE_LINUX="\1 {{ item.context }}"'
+    state: present
+    backrefs: true
+  loop:
+    - {regex: "intel_iommu=", context: "intel_iommu=on"}
+    - {regex: "transparent_hugepage=", context: "transparent_hugepage=never"}
+    - {regex: "default_hugepagesz=", context: "default_hugepagesz=1G"}
+    - {
+      regex: "hugepagesz=1G",
+      context: "hugepagesz=1G hugepages={{ sriov_1g_hugepages }}",
+    }
+  notify: update grub
+
+- name: Install qat driver and configure sriov vfs
+  when: sriov_qat_enabled
+  include_tasks: qat.yml

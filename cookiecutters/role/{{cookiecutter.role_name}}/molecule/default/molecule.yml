@@ -1,0 +1,31 @@
+---
+# {{ cookiecutter.role_name }} molecule/default/molecule.yml
+#
+# SPDX-FileCopyrightText: {{ cookiecutter.year }} {{ cookiecutter.author }} <{{ cookiecutter.email }}>
+# SPDX-License-Identifier: {{ cookiecutter.license }}
+
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: "ubuntu-18.04-priv"
+    image: "quay.io/paulfantom/molecule-systemd:ubuntu-18.04"
+    privileged: true
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - name: "debian-11-priv"
+    image: "onfinfra/molecule-systemd:debian-11"
+    privileged: true
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+provisioner:
+  name: ansible
+  inventory:
+    host_vars:
+      debian-11-priv:
+        ansible_python_interpreter: /usr/bin/python3
+      ubuntu-18.04-priv:
+        ansible_python_interpreter: /usr/bin/python3
+verifier:
+  name: ansible

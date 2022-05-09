@@ -1,0 +1,15 @@
+{#
+SPDX-FileCopyrightText: © 2022 Open Networking Foundation <support@opennetworking.org>
+SPDX-License-Identifier: Apache-2.0
+#}
+# {{ ansible_managed }}
+
+[Unit]
+Description=Create QAT VFs
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/sriov_qat.sh
+
+[Install]
+WantedBy=default.target

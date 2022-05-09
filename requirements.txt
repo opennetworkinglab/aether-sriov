@@ -1,0 +1,36 @@
+# Python tools required for Ansible and tests to run
+#
+# SPDX-FileCopyrightText: © 2020 Open Networking Foundation <support@opennetworking.org>
+# SPDX-License-Identifier: Apache-2.0
+
+# ansible
+ansible~=5.3.0
+netaddr~=0.8.0
+ansible-lint~=5.4.0
+rich~=10.16.2
+
+# ansible testing
+molecule~=3.5.2  # newest 3.6.0 has bug that breaks molecule login: https://github.com/ansible-community/molecule/issues/3435
+molecule-vagrant~=1.0.0
+python-vagrant~=0.5.15
+molecule-docker~=1.1.0
+docker~=5.0.3
+
+# linting and formatting
+black~=22.1.0
+flake8~=4.0.1
+pylint~=2.11.1
+reuse~=0.14.0
+yamllint~=1.26.3
+python-debian==0.1.40
+
+# netbox
+pynetbox~=6.6.0
+
+# templating
+cookiecutter~=1.7.3
+
+# password generation
+passlib~=1.7.4
+bcrypt~=3.2.0
+zxcvbn~=4.4.28
